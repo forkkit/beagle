@@ -24,29 +24,29 @@ Feature: ListView Component Validation
     Background:
         Given that I'm on the listview screen
 
-#    Scenario Outline: Simple ListView 01 - listView renders all items correctly
-#        When I click on button SIMPLE LIST
-#        And system navigates to SIMPLE LIST view
-#        And system shows a listView component with id simpleList
-#        Then listView at <position> renders view with <id> and <text>
-#
-#        Examples:
-#            | position | id      | text       |
-#            | 0        | text:0  | 1 OUTSIDE  |
-#            | 1        | text:1  | 2 OUTSIDE  |
-#            | 2        | text:2  | 3 OUTSIDE  |
-#            | 3        | text:3  | 4 OUTSIDE  |
-#            | 4        | text:4  | 5 OUTSIDE  |
-#            | 5        | text:5  | 6 OUTSIDE  |
-#            | 6        | text:6  | 7 OUTSIDE  |
-#            | 7        | text:7  | 8 OUTSIDE  |
-#            | 8        | text:8  | 9 OUTSIDE  |
-#            | 9        | text:9  | 10 OUTSIDE |
-#            | 10       | text:10 | 11 OUTSIDE |
-#            | 11       | text:11 | 12 OUTSIDE |
-#            | 12       | text:12 | 13 OUTSIDE |
-#            | 13       | text:13 | 14 OUTSIDE |
-#            | 14       | text:14 | 15 OUTSIDE |
+    Scenario Outline: Simple ListView 01 - listView renders all items correctly
+        When I click on button SIMPLE LIST
+        And system navigates to SIMPLE LIST view
+        And system shows a listView component with id simpleList
+        Then listView at <position> renders view with <id> and <text>
+
+        Examples:
+            | position | id      | text       |
+            | 0        | text:0  | 1 OUTSIDE  |
+            | 1        | text:1  | 2 OUTSIDE  |
+            | 2        | text:2  | 3 OUTSIDE  |
+            | 3        | text:3  | 4 OUTSIDE  |
+            | 4        | text:4  | 5 OUTSIDE  |
+            | 5        | text:5  | 6 OUTSIDE  |
+            | 6        | text:6  | 7 OUTSIDE  |
+            | 7        | text:7  | 8 OUTSIDE  |
+            | 8        | text:8  | 9 OUTSIDE  |
+            | 9        | text:9  | 10 OUTSIDE |
+            | 10       | text:10 | 11 OUTSIDE |
+            | 11       | text:11 | 12 OUTSIDE |
+            | 12       | text:12 | 13 OUTSIDE |
+            | 13       | text:13 | 14 OUTSIDE |
+            | 14       | text:14 | 15 OUTSIDE |
 
 #    Scenario Outline: Simple ListView 02 - listView renders all items correctly after screen rotation
 #        When I click on button SIMPLE LIST
@@ -108,11 +108,11 @@ Feature: ListView Component Validation
 #        #And system shows a listView component with id simpleList
 #        Then an alert containing OnScrollEnd message should appear
 
-    Scenario: On Scroll End 05 - onScrollEnd action is called again after fetch data
-        When I click on button SIMPLE LIST WITH SCROLL END
-        #And system navigates to EMPTY LIST view
-        #And system shows a listView component with id simpleList
-        Then an alert containing OnScrollEnd message should appear
+#    Scenario: On Scroll End 05 - onScrollEnd action is called again after fetch data
+#        When I click on button SIMPLE LIST WITH SCROLL END
+#        #And system navigates to EMPTY LIST view
+#        #And system shows a listView component with id simpleList
+#        Then an alert containing OnScrollEnd message should appear
 
 #    Scenario Outline: Embedded ListView 01 - listView renders all items correctly
 #        When I click on button EMBEDDED LIST WITH CONTEXT
