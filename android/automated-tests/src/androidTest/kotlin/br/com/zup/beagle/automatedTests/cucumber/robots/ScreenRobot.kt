@@ -18,15 +18,19 @@ package br.com.zup.beagle.automatedTests.cucumber.robots
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
+import br.com.zup.beagle.android.utils.toAndroidId
 import br.com.zup.beagle.automatedTests.R
 import br.com.zup.beagle.automatedTests.utils.WaitHelper
+import br.com.zup.beagle.automatedTests.utils.action.OrientationChangeAction
 import br.com.zup.beagle.automatedTests.utils.matcher.MatcherExtension
 import br.com.zup.beagle.widget.core.TextAlignment
 import org.hamcrest.Description
@@ -132,6 +136,34 @@ class ScreenRobot {
 
     fun hideKeyboard() {
         Espresso.closeSoftKeyboard()
+    }
+
+    fun scrollListToPosition(listId: String, position: Int): ScreenRobot {
+        onView(withId(listId.toAndroidId()))
+            .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(position))
+        return this
+    }
+
+    fun checkViewWithIdContainsText(viewId: String, expectedText: String, waitForText: Boolean = false): ScreenRobot {
+        if (waitForText) {
+            WaitHelper.waitForWithElement(onView(Matchers.allOf(withId(viewId.toAndroidId()), withText(expectedText))))
+        }
+
+        onView(Matchers.allOf(withId(viewId.toAndroidId()), withText(expectedText))).check(matches(isDisplayed()))
+        return this
+    }
+
+    fun setScreenPortrait(){
+        onView(isRoot()).perform(OrientationChangeAction.orientationPortrait())
+    }
+
+    fun setScreenLandScape(){
+        onView(isRoot()).perform(OrientationChangeAction.orientationLandscape())
+    }
+
+    fun clickOnViewWithId(id: String): ScreenRobot {
+        onView(withId(id.toAndroidId())).perform(ViewActions.click())
+        return this
     }
 
     companion object {

@@ -16,17 +16,16 @@
 
 package br.com.zup.beagle.automatedtests.builders
 
+import br.com.zup.beagle.automatedtests.constants.LISTVIEW_EMBEDDED_WITH_CONTEXT_TABVIEW_ENDPOINT
+import br.com.zup.beagle.automatedtests.constants.LISTVIEW_EMPTY_SCROLLEND_ENDPOINT
+import br.com.zup.beagle.automatedtests.constants.LISTVIEW_SHORT_SCROLLEND_ENDPOINT
+import br.com.zup.beagle.automatedtests.constants.LISTVIEW_SIMPLE_TABVIEW_ENDPOINT
 import br.com.zup.beagle.core.Style
-import br.com.zup.beagle.ext.applyStyle
-import br.com.zup.beagle.ext.setId
-import br.com.zup.beagle.ext.unitPercent
-import br.com.zup.beagle.ext.unitReal
-import br.com.zup.beagle.widget.action.Alert
-import br.com.zup.beagle.widget.action.SetContext
+import br.com.zup.beagle.ext.*
+import br.com.zup.beagle.widget.action.*
 import br.com.zup.beagle.widget.context.ContextData
 import br.com.zup.beagle.widget.context.expressionOf
-import br.com.zup.beagle.widget.core.ListDirection
-import br.com.zup.beagle.widget.core.Size
+import br.com.zup.beagle.widget.core.*
 import br.com.zup.beagle.widget.layout.Container
 import br.com.zup.beagle.widget.layout.NavigationBar
 import br.com.zup.beagle.widget.layout.NavigationBarItem
@@ -37,9 +36,22 @@ import br.com.zup.beagle.widget.ui.ListView
 import br.com.zup.beagle.widget.ui.Text
 
 object ListViewScreenBuilder {
-     fun build() = Screen(
+    fun buildListViewOptionsSceen() = buildScreen("Beagle ListView", buildOptionsScreen())
+
+    fun buildSimpleListViewScreen() = buildScreen("SIMPLE LIST", buildSimpleListView(simpleValuesList, null))
+
+    fun buildEmbeddedListViewWithContextScreen() = buildScreen("EMBEDDED LIST WITH CONTEXT",
+        buildEmbeddedListViewWithContext())
+
+    fun buildListViewEmptyWithScrollEndScreen() = buildScreen("EMPTY LIST",
+        buildSimpleListView(emptyList(), listOf(Alert(message = "OnScrollEnd"))))
+
+    fun buildListViewShortWithScrollEndScreen() = buildScreen("SHORT LIST",
+        buildSimpleListView(shortSimpleValuesList, listOf(Alert(message = "OnScrollEnd"))))
+
+    private fun buildScreen(title: String, child: Container) = Screen(
         navigationBar = NavigationBar(
-            title = "Beagle ListView",
+            title = title,
             showBackButton = true,
             navigationBarItems = listOf(
                 NavigationBarItem(
@@ -54,28 +66,189 @@ object ListViewScreenBuilder {
                 )
             )
         ),
-        child = buildListView()
+        child = child
     )
 
-    private fun buildListView() = ListView(
-        context = ContextData(
-            id = "outsideContext",
-            value = listOf("0 OUTSIDE", "1 OUTSIDE", "2 OUTSIDE", "3 OUTSIDE", "4 OUTSIDE", "5 OUTSIDE",
-                "6 OUTSIDE", "7 OUTSIDE", "8 OUTSIDE", "9 OUTSIDE", "10 OUTSIDE",
-                "11 OUTSIDE", "12 OUTSIDE", "13 OUTSIDE", "14 OUTSIDE", "15 OUTSIDE",
-                "16 OUTSIDE", "17 OUTSIDE", "18 OUTSIDE", "19 OUTSIDE", "20 OUTSIDE")
+    private fun buildOptionsScreen() = Container(
+        children = listOf(
+            Button(
+                text = "SIMPLE LIST",
+                onPress = listOf(
+                    Navigate.PushView(
+                        route = Route.Remote(url = LISTVIEW_SIMPLE_TABVIEW_ENDPOINT)
+                    )
+                )
+            ),
+            Button(
+                text = "EMPTY LIST WITH SCROLL END",
+                onPress = listOf(
+                    Navigate.PushView(
+                        route = Route.Remote(url = LISTVIEW_EMPTY_SCROLLEND_ENDPOINT)
+                    )
+                )
+            ),
+            Button(
+                text = "SHORT LIST WITH SCROLL END",
+                onPress = listOf(
+                    Navigate.PushView(
+                        route = Route.Remote(url = LISTVIEW_SHORT_SCROLLEND_ENDPOINT)
+                    )
+                )
+            ),
+            Button(
+                text = "SIMPLE LIST WITH SCROLL END",
+                onPress = listOf(
+                    Navigate.PushView(
+                        route = Route.Remote(url = LISTVIEW_SIMPLE_TABVIEW_ENDPOINT)
+                    )
+                )
+            ),
+            Button(
+                text = "EMBEDDED LIST WITH CONTEXT",
+                onPress = listOf(
+                    Navigate.PushView(
+                        route = Route.Remote(url = LISTVIEW_EMBEDDED_WITH_CONTEXT_TABVIEW_ENDPOINT)
+                    )
+                )
+            ),
+            Button(
+                text = "EMBEDDED LIST TWO"
+            )
+        )
+    ).applyFlex(
+        flex = Flex(
+            alignItems = AlignItems.CENTER,
+            flexDirection = FlexDirection.COLUMN
+        )
+    )
+
+    private val simpleValuesList = listOf("1 OUTSIDE", "2 OUTSIDE", "3 OUTSIDE", "4 OUTSIDE", "5 OUTSIDE",
+        "6 OUTSIDE", "7 OUTSIDE", "8 OUTSIDE", "9 OUTSIDE", "10 OUTSIDE", "11 OUTSIDE", "12 OUTSIDE",
+        "13 OUTSIDE", "14 OUTSIDE", "15 OUTSIDE")
+
+    private val shortSimpleValuesList = listOf("1 OUTSIDE")
+
+    val simpleValuesListPage2 = listOf("16 OUTSIDE", "17 OUTSIDE", "18 OUTSIDE", "19 OUTSIDE", "20 OUTSIDE")
+
+    private val listNamesPage1 = listOf(
+        Person(
+            "John",
+            0
         ),
-        dataSource = expressionOf("@{outsideContext}"),
-        direction = ListDirection.VERTICAL,
-        template = Container(
-            children = listOf(
-                Text(text = expressionOf("@{item}")),
-                list
+        Person(
+            "Carter",
+            1
+        ),
+        Person(
+            "Josie",
+            2
+        ),
+        Person(
+            "Dimitri",
+            3
+        ),
+        Person(
+            "Maria",
+            4
+        ),
+        Person(
+            "Max",
+            5
+        ),
+        Person(
+            "Kane",
+            6
+        ),
+        Person(
+            "Amelia",
+            7
+        ),
+        Person(
+            "Jose",
+            8
+        ),
+        Person(
+            "Percy",
+            9
+        ),
+        Person(
+            "Karen",
+            10
+        ),
+        Person(
+            "Sol",
+            11
+        ),
+        Person(
+            "Jacques",
+            12
+        ),
+        Person(
+            "Stephen",
+            13
+        ),
+        Person(
+            "Sullivan",
+            14
+        ),
+        Person(
+            "Zoe",
+            15
+        )
+    )
+
+    private fun buildSimpleListView(
+        items: List<String>,
+        onScrollEnd: List<Action>?
+    ) = Container(
+        children = listOf(
+            ListView(
+                context = ContextData(
+                    id = "outsideContext",
+                    value = items
+                ),
+                dataSource = expressionOf("@{outsideContext}"),
+                direction = ListDirection.VERTICAL,
+                onScrollEnd = onScrollEnd,
+                template = Container(
+                    children = listOf(
+                        Text(
+                            text = expressionOf("@{item}")
+                        ).setId(id = "text")
+                    )
+                ).applyStyle(
+                    Style(
+                        size = Size(width = 500.unitReal(), height = 300.unitReal())
+                    )
+                )
+            ).setId(
+                id = "simpleList"
             )
-        ).applyStyle(
-            Style(
-                size = Size(width = 100.unitPercent(), height = 600.unitReal())
-            )
+        )
+    )
+
+    private fun buildEmbeddedListViewWithContext() = Container(
+        children = listOf(
+            ListView(
+                context = ContextData(
+                    id = "outsideContext",
+                    value = simpleValuesList
+                ),
+                dataSource = expressionOf("@{outsideContext}"),
+                direction = ListDirection.VERTICAL,
+                template = Container(
+                    children = listOf(
+                        Text(
+                            text = expressionOf("@{item}")
+                        ).setId(id = "text"),
+                        personlist
+                    )
+                ).applyStyle(
+                    Style(
+                        size = Size(width = 500.unitReal(), height = 300.unitReal())
+                    )
+                )
+            ).setId(id = "outerList")
         )
     )
 
@@ -84,75 +257,10 @@ object ListViewScreenBuilder {
         val cpf: Int
     )
 
-    private val list = ListView(
+    private val personlist = ListView(
         context = ContextData(
             id = "insideContext",
-            value = listOf(
-                Person(
-                    "John",
-                    0
-                ),
-                Person(
-                    "Carter",
-                    1
-                ),
-                Person(
-                    "Josie",
-                    2
-                ),
-                Person(
-                    "Dimitri",
-                    3
-                ),
-                Person(
-                    "Maria",
-                    4
-                ),
-                Person(
-                    "Max",
-                    5
-                ),
-                Person(
-                    "Kane",
-                    6
-                ),
-                Person(
-                    "Amelia",
-                    7
-                ),
-                Person(
-                    "Jose",
-                    8
-                ),
-                Person(
-                    "Percy",
-                    9
-                ),
-                Person(
-                    "Karen",
-                    10
-                ),
-                Person(
-                    "Sol",
-                    11
-                ),
-                Person(
-                    "Jacques",
-                    12
-                ),
-                Person(
-                    "Stephen",
-                    13
-                ),
-                Person(
-                    "Sullivan",
-                    14
-                ),
-                Person(
-                    "Zoe",
-                    15
-                )
-            )
+            value = listNamesPage1
         ),
         key = "cpf",
         dataSource = expressionOf("@{insideContext}"),
@@ -179,5 +287,5 @@ object ListViewScreenBuilder {
         Style(
             backgroundColor = "#CCC"
         )
-    )
+    ).setId(id = "innerList")
 }

@@ -16,6 +16,7 @@
 
 package br.com.zup.beagle.automatedTests.cucumber.steps
 
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import br.com.zup.beagle.automatedTests.activity.MainActivity
 import br.com.zup.beagle.automatedTests.cucumber.elements.*
@@ -34,6 +35,8 @@ class ListViewScreenSteps {
     @Rule
     var activityTestRule = ActivityTestRule(MainActivity::class.java)
 
+    lateinit var listId: String
+
     @Before("@listview")
     fun setup() {
         TestUtils.startActivity(activityTestRule, LIST_VIEW_SCREEN_BFF_URL)
@@ -50,7 +53,82 @@ class ListViewScreenSteps {
             .checkViewContainsText(LISTVIEW_SCREEN_HEADER, true)
     }
 
-    @When("^I have a vertical list configured$")
+    @When("^system navigates to (.*) view$")
+    fun checkSimpleListViewScreen(screenTitle: String) {
+        ScreenRobot()
+            .checkViewContainsText(screenTitle, true)
+    }
+
+    @When("^system shows a listView component with id (.*)$")
+    fun getListViewId(listId: String) {
+        this.listId = listId
+    }
+
+    //TODO: jogar para generic steps
+    @When("^I scroll listView to position (.*)$")
+    fun scrollListViewToPosition(position: Int) {
+        ScreenRobot()
+            .scrollListToPosition(listId, position)
+    }
+
+    //TODO: jogar para generic steps
+    @When("^I rotate the screen to landscape$")
+    fun rotateScreenLandscape() {
+        ScreenRobot()
+            .setScreenLandScape()
+    }
+
+    //TODO: jogar para generic steps
+    @When("^I rotate the screen to portrait$")
+    fun rotateScreenPortrait() {
+        ScreenRobot()
+            .setScreenPortrait()
+    }
+
+    //TODO: ver se dá para fazer com generic steps
+    @When("^I click on inner list on button with id (.*)$")
+    fun clickOnViewWithId(viewId: String) {
+        ScreenRobot()
+            .clickOnViewWithId(viewId)
+    }
+
+    //TODO: possivelmente duplicado com o de baixo. Verificar depois
+    @Then("^the button with id (.*) shows text (.*)$")
+    fun checkViewRenderText(viewId: String, text: String) {
+        ScreenRobot()
+            .checkViewWithIdContainsText(viewId, text, true)
+    }
+
+
+    @Then("^listView at (.*) renders view with (.*) and (.*)$")
+    fun checkListViewItemRenderText(position: Int, viewId: String, text: String) {
+        ScreenRobot()
+            .scrollListToPosition(listId, position)
+            .checkViewWithIdContainsText(viewId, text)
+    }
+
+    @Then("^Outer listView at (.*) shows Inner listView with id (.*) that renders a view with (.*) and (.*) at (.*)$")
+    fun checkListViewItemRenderText(outerListPosition: Int, innerListId: String, viewId: String, text: String, innerListPosition: Int) {
+        ScreenRobot()
+            .scrollListToPosition(listId, outerListPosition)
+            .scrollListToPosition(innerListId, innerListPosition)
+            .checkViewWithIdContainsText(viewId, text)
+    }
+
+    @Then("^an alert containing (.*) message should appear$")
+    fun checkOnScrollEndAlertMessage(string: String) {
+        ScreenRobot()
+            .checkViewContainsText(string, true)
+    }
+
+    @Then("^an alert containing (.*) message should NOT appear$")
+    fun checkOnScrollEndAlertMessageNotVisible(string: String) {
+        ScreenRobot()
+            .checkViewDoesNotContainsText(string)
+    }
+
+
+    /*@When("^I have a vertical list configured$")
     fun checkVerticalListText() {
         ScreenRobot()
             .checkViewContainsText(STATIC_LISTVIEW_TEXT_1)
@@ -59,10 +137,10 @@ class ListViewScreenSteps {
 
     @Then("^listview screen should render all text attributes correctly$")
     fun checkListViewScreenTexts() {
-        ScreenRobot()
+        /*ScreenRobot()
             .checkViewContainsText(STATIC_LISTVIEW_TEXT_1)
             .checkViewContainsText(STATIC_LISTVIEW_TEXT_2)
-            .checkViewContainsText(DYNAMIC_LISTVIEW_TEXT_1)
+            .checkViewContainsText(DYNAMIC_LISTVIEW_TEXT_1)*/
     }
 
     @Then("^listview screen should perform the scroll action vertically$")
@@ -70,7 +148,7 @@ class ListViewScreenSteps {
         ScreenRobot()
             .scrollTo(DYNAMIC_LISTVIEW_TEXT_2)
             .sleep(2)
-    }
+    }*/
 
 
 }

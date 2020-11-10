@@ -21,11 +21,7 @@ import br.com.zup.beagle.automatedtests.builders.ListViewScreenBuilder
 import br.com.zup.beagle.automatedtests.builders.PageViewScreenBuilder
 import br.com.zup.beagle.automatedtests.builders.ScrollViewScreenBuilder
 import br.com.zup.beagle.automatedtests.builders.TabViewScreenBuilder
-import br.com.zup.beagle.automatedtests.constants.CONTAINER_TEST_ENDPOINT
-import br.com.zup.beagle.automatedtests.constants.LISTVIEW_TABVIEW_ENDPOINT
-import br.com.zup.beagle.automatedtests.constants.PAGEVIEW_TABVIEW_ENDPOINT
-import br.com.zup.beagle.automatedtests.constants.SCREEN_TABVIEW_ENDPOINT
-import br.com.zup.beagle.automatedtests.constants.SCROLLVIEW_TABVIEW_ENDPOINT
+import br.com.zup.beagle.automatedtests.constants.*
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -39,7 +35,22 @@ class ContainersController {
     fun getPageViewScreen() = PageViewScreenBuilder.build()
 
     @GetMapping(LISTVIEW_TABVIEW_ENDPOINT)
-    fun getListViewScreen() = ListViewScreenBuilder.build()
+    fun getListViewScreen() = ListViewScreenBuilder.buildListViewOptionsSceen()
+
+    @GetMapping(LISTVIEW_SIMPLE_TABVIEW_ENDPOINT)
+    fun getListViewSimpleScreen() = ListViewScreenBuilder.buildSimpleListViewScreen()
+
+    @GetMapping(LISTVIEW_EMPTY_SCROLLEND_ENDPOINT)
+    fun getListViewEmptyWithScrollEndScreen() = ListViewScreenBuilder.buildListViewEmptyWithScrollEndScreen()
+
+    @GetMapping(LISTVIEW_SHORT_SCROLLEND_ENDPOINT)
+    fun getListViewShortWithScrollEndScreen() = ListViewScreenBuilder.buildListViewShortWithScrollEndScreen()
+
+    @GetMapping(LISTVIEW_EMBEDDED_WITH_CONTEXT_TABVIEW_ENDPOINT)
+    fun getEmbeddedListViewWithContextScreen() = ListViewScreenBuilder.buildEmbeddedListViewWithContextScreen()
+
+    @GetMapping(LISTVIEW_EMBEDDED_WITH_CONTEXT_PAGE_2_TABVIEW_ENDPOINT)
+    fun getListNamesPage2() = ListViewScreenBuilder.simpleValuesListPage2
 
     @GetMapping(SCROLLVIEW_TABVIEW_ENDPOINT)
     fun getScrollViewScreen() = ScrollViewScreenBuilder.build()

@@ -75,6 +75,7 @@ const val SCROLLVIEW_TEXT_2 = "Horizontal ScrollView with scrollBars"
 
 //ListView Screen
 const val LISTVIEW_SCREEN_HEADER = "Beagle ListView"
+const val LISTVIEW_SIMPLE_SCREEN_HEADER = "Simple ListView"
 const val STATIC_LISTVIEW_TEXT_1 = "Static VERTICAL ListView"
 const val STATIC_LISTVIEW_TEXT_2 = "Static HORIZONTAL ListView"
 const val DYNAMIC_LISTVIEW_TEXT_1 = "Dynamic VERTICAL ListView"
