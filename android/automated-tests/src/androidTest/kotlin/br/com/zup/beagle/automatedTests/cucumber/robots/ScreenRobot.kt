@@ -16,18 +16,26 @@
 
 package br.com.zup.beagle.automatedTests.cucumber.robots
 
+import android.text.InputType
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import android.widget.Toast
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.pressBack
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import br.com.zup.beagle.android.utils.toAndroidId
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withClassName
+import androidx.test.espresso.matcher.ViewMatchers.withHint
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import br.com.zup.beagle.automatedTests.R
 import br.com.zup.beagle.automatedTests.utils.WaitHelper
 import br.com.zup.beagle.automatedTests.utils.action.OrientationChangeAction
@@ -36,6 +44,8 @@ import br.com.zup.beagle.widget.core.TextAlignment
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
+import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.not
 import org.hamcrest.TypeSafeMatcher
 import kotlin.jvm.Throws
 
@@ -77,6 +87,16 @@ class ScreenRobot {
         return this
     }
 
+    fun checkViewIsNotDisplayed(text: String?): ScreenRobot{
+        onView(Matchers.allOf(withText(text))).check(matches(not(isDisplayed())))
+        return this
+    }
+
+    fun typeText(hint: String, text: String) : ScreenRobot {
+        onView(withHint(hint)).perform(ViewActions.typeText((text)))
+        return this
+    }
+
     fun checkViewContainsHint(hint: String?, waitForText: Boolean = false): ScreenRobot {
         if (waitForText) {
             WaitHelper.waitForWithElement(onView(withHint(hint)))
@@ -93,6 +113,27 @@ class ScreenRobot {
 
     fun clickOnInputWithHint(hint: String?): ScreenRobot {
         onView(Matchers.allOf(withHint(hint), isDisplayed())).perform(ViewActions.click())
+        return this
+    }
+
+    fun disabledFieldHint(text: String)  : ScreenRobot {
+        onView(withHint(text)).check(matches(not(isEnabled())))
+        return this
+    }
+
+    fun disabledFieldText(text: String) : ScreenRobot {
+        onView(withText(text)).check(matches(not(isEnabled())))
+        return this
+    }
+
+    fun hintInSecondPlan(text: String) : ScreenRobot {
+        onView(withHint(text)).perform(pressBack())
+        onView(allOf(withHint(text), isDisplayed()))
+        return this
+    }
+
+    fun checkInputTypeNumber(text: String) : ScreenRobot {
+        onView(withHint(text)).check(matches(allOf(withInputType(InputType.TYPE_CLASS_NUMBER))))
         return this
     }
 
@@ -120,6 +161,11 @@ class ScreenRobot {
 
     fun scrollTo(text: String?): ScreenRobot {
         onView(withText(text)).perform(scrollTo()).check(matches(isDisplayed()))
+        return this
+    }
+
+    fun scrollToWithHint(text: String?): ScreenRobot {
+        onView(withHint(text)).perform(scrollTo()).check(matches(isDisplayed()))
         return this
     }
 
