@@ -61,6 +61,7 @@
             android:theme="@style/AppTheme.NoToolbar" />
 
         <activity android:name=".fragment.list.ListViewActivity" />
+        <activity android:name=".TestActivity" />
         <activity android:name=".fragment.list.DeprecatedListViewActivity" />
 
     </application>

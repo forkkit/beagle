@@ -52,6 +52,10 @@ class ContainersController {
     @GetMapping(LISTVIEW_EMBEDDED_WITH_CONTEXT_TABVIEW_ENDPOINT)
     fun getEmbeddedListViewWithContextScreen() = ListViewScreenBuilder.buildEmbeddedListViewWithContextScreen()
 
+
+    @GetMapping(LISTVIEW_SIMPLE_WITH_CONTEXT_ENDPOINT)
+    fun getListViewSimpleWithContextScreen() = ListViewScreenBuilder.buildListViewSimpleWithContextScreen()
+
     @GetMapping(LISTVIEW_EMBEDDED_WITH_CONTEXT_PAGE_2_TABVIEW_ENDPOINT)
     fun getListNamesPage2() = ListViewScreenBuilder.simpleValuesListPage2
 

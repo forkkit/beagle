@@ -48,6 +48,9 @@ object ListViewScreenBuilder {
     fun buildListViewShortWithScrollEndScreen() = buildScreen("SHORT LIST",
         buildSimpleListView(shortSimpleValuesList, listOf(Alert(message = "OnScrollEnd"))))
 
+    fun buildListViewSimpleWithContextScreen() = buildScreen("SIMPLE LIST",
+        Container(children = listOf(personlist)))
+
     private fun buildScreen(title: String, child: Container) = Screen(
         navigationBar = NavigationBar(
             title = title,
@@ -75,6 +78,14 @@ object ListViewScreenBuilder {
                 onPress = listOf(
                     Navigate.PushView(
                         route = Route.Remote(url = LISTVIEW_SIMPLE_TABVIEW_ENDPOINT)
+                    )
+                )
+            ),
+            Button(
+                text = "SIMPLE LIST WITH CONTEXT",
+                onPress = listOf(
+                    Navigate.PushView(
+                        route = Route.Remote(url = LISTVIEW_SIMPLE_WITH_CONTEXT_ENDPOINT)
                     )
                 )
             ),

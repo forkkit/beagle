@@ -16,13 +16,18 @@
 
 package br.com.zup.beagle.sample
 
+import android.content.Intent
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import br.com.zup.beagle.android.utils.newServerDrivenIntent
+import br.com.zup.beagle.android.view.BeagleActivity
 import br.com.zup.beagle.android.view.ScreenRequest
 import br.com.zup.beagle.android.view.ServerDrivenActivity
+import br.com.zup.beagle.android.view.ServerDrivenState
 import br.com.zup.beagle.sample.activities.NavigationBarActivity
 import br.com.zup.beagle.sample.constants.SAMPLE_ENDPOINT
 import br.com.zup.beagle.sample.fragment.ComposeComponentFragment
@@ -66,7 +71,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             R.id.form -> goToFragment(FormFragment.newInstance())
             R.id.tabBar -> goToFragment(TabViewFragment.newInstance())
             R.id.disabledFormSubmit -> goToFragment(DisabledFormSubmitFragment.newInstance())
-            R.id.listView -> goToFragment(ListViewFragment.newInstance())
+            //R.id.listView -> goToFragment(ListViewFragment.newInstance())
+            R.id.listView -> {
+                startActivity(
+                    Intent(this, TestActivity::class.java)
+                        .putExtras(BeagleActivity.bundleOf(ScreenRequest("/listview-simple-context")))
+                )
+            }
             R.id.webView -> goToFragment(WebViewFragment.newInstance())
             R.id.composeComponent -> goToFragment(ComposeComponentFragment.newInstance())
             R.id.sampleBff -> startActivity(newServerDrivenIntent<ServerDrivenActivity>(ScreenRequest(SAMPLE_ENDPOINT)))
@@ -78,4 +89,23 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         fragmentTransaction.replace(R.id.fragment_content, fragment)
         fragmentTransaction.commit()
     }
+}
+
+class TestActivity: BeagleActivity(){
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+    }
+    override fun getToolbar(): Toolbar {
+        return Toolbar(this)
+    }
+
+    override fun getServerDrivenContainerId(): Int {
+        return R.id.fragment_content
+    }
+
+    override fun onServerDrivenContainerStateChanged(state: ServerDrivenState) {
+    }
+
 }
