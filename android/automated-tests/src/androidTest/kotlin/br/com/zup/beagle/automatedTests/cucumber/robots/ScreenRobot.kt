@@ -187,6 +187,7 @@ class ScreenRobot {
     fun scrollListToPosition(listId: String, position: Int): ScreenRobot {
         onView(withId(listId.toAndroidId()))
             .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(position))
+        //recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView, null, recyclerAdapter.getItemCount() - 1);
         return this
     }
 

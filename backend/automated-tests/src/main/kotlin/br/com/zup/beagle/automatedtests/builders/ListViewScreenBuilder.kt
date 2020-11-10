@@ -16,10 +16,7 @@
 
 package br.com.zup.beagle.automatedtests.builders
 
-import br.com.zup.beagle.automatedtests.constants.LISTVIEW_EMBEDDED_WITH_CONTEXT_TABVIEW_ENDPOINT
-import br.com.zup.beagle.automatedtests.constants.LISTVIEW_EMPTY_SCROLLEND_ENDPOINT
-import br.com.zup.beagle.automatedtests.constants.LISTVIEW_SHORT_SCROLLEND_ENDPOINT
-import br.com.zup.beagle.automatedtests.constants.LISTVIEW_SIMPLE_TABVIEW_ENDPOINT
+import br.com.zup.beagle.automatedtests.constants.*
 import br.com.zup.beagle.core.Style
 import br.com.zup.beagle.ext.*
 import br.com.zup.beagle.widget.action.*
@@ -39,6 +36,8 @@ object ListViewScreenBuilder {
     fun buildListViewOptionsSceen() = buildScreen("Beagle ListView", buildOptionsScreen())
 
     fun buildSimpleListViewScreen() = buildScreen("SIMPLE LIST", buildSimpleListView(simpleValuesList, null))
+
+    fun buildSimpleListViewWithScrollEndScreen() = buildScreen("SIMPLE LIST", buildSimpleListView(simpleValuesList, listOf(Alert(message = "OnScrollEnd"))))
 
     fun buildEmbeddedListViewWithContextScreen() = buildScreen("EMBEDDED LIST WITH CONTEXT",
         buildEmbeddedListViewWithContext())
@@ -99,7 +98,7 @@ object ListViewScreenBuilder {
                 text = "SIMPLE LIST WITH SCROLL END",
                 onPress = listOf(
                     Navigate.PushView(
-                        route = Route.Remote(url = LISTVIEW_SIMPLE_TABVIEW_ENDPOINT)
+                        route = Route.Remote(url = LISTVIEW_SIMPLE_SCROLLEND_ENDPOINT)
                     )
                 )
             ),
@@ -122,7 +121,7 @@ object ListViewScreenBuilder {
         )
     )
 
-    private val simpleValuesList = listOf("1 OUTSIDE", "2 OUTSIDE", "3 OUTSIDE", "4 OUTSIDE", "5 OUTSIDE",
+    val simpleValuesList = listOf("1 OUTSIDE", "2 OUTSIDE", "3 OUTSIDE", "4 OUTSIDE", "5 OUTSIDE",
         "6 OUTSIDE", "7 OUTSIDE", "8 OUTSIDE", "9 OUTSIDE", "10 OUTSIDE", "11 OUTSIDE", "12 OUTSIDE",
         "13 OUTSIDE", "14 OUTSIDE", "15 OUTSIDE")
 
@@ -130,7 +129,7 @@ object ListViewScreenBuilder {
 
     val simpleValuesListPage2 = listOf("16 OUTSIDE", "17 OUTSIDE", "18 OUTSIDE", "19 OUTSIDE", "20 OUTSIDE")
 
-    private val listNamesPage1 = listOf(
+    val listNamesPage1 = listOf(
         Person(
             "John",
             0
@@ -232,7 +231,18 @@ object ListViewScreenBuilder {
             ListView(
                 context = ContextData(
                     id = "outsideContext",
-                    value = simpleValuesList
+                    value = emptyList<String>()
+                ),
+                onInit = listOf(
+                    SendRequest(
+                        url = "http://10.0.2.2:8080/listview-values",
+                        onSuccess = listOf(
+                            SetContext(
+                                contextId = "outsideContext",
+                                value = "@{onSuccess.data}"
+                            )
+                        )
+                    )
                 ),
                 dataSource = expressionOf("@{outsideContext}"),
                 direction = ListDirection.VERTICAL,
@@ -260,7 +270,18 @@ object ListViewScreenBuilder {
     private val personlist = ListView(
         context = ContextData(
             id = "insideContext",
-            value = listNamesPage1
+            value = emptyList<Person>()
+        ),
+        onInit = listOf(
+            SendRequest(
+                url =  "http://10.0.2.2:8080/listview-names",
+                onSuccess = listOf(
+                    SetContext(
+                        contextId = "insideContext",
+                        value = "@{onSuccess.data}"
+                    )
+                )
+            )
         ),
         key = "cpf",
         dataSource = expressionOf("@{insideContext}"),

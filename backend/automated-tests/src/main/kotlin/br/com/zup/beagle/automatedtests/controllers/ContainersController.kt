@@ -40,6 +40,9 @@ class ContainersController {
     @GetMapping(LISTVIEW_SIMPLE_TABVIEW_ENDPOINT)
     fun getListViewSimpleScreen() = ListViewScreenBuilder.buildSimpleListViewScreen()
 
+    @GetMapping(LISTVIEW_SIMPLE_SCROLLEND_ENDPOINT)
+    fun getListViewSimpleWithScrollEndScreen() = ListViewScreenBuilder.buildSimpleListViewWithScrollEndScreen()
+
     @GetMapping(LISTVIEW_EMPTY_SCROLLEND_ENDPOINT)
     fun getListViewEmptyWithScrollEndScreen() = ListViewScreenBuilder.buildListViewEmptyWithScrollEndScreen()
 
@@ -51,6 +54,12 @@ class ContainersController {
 
     @GetMapping(LISTVIEW_EMBEDDED_WITH_CONTEXT_PAGE_2_TABVIEW_ENDPOINT)
     fun getListNamesPage2() = ListViewScreenBuilder.simpleValuesListPage2
+
+    @GetMapping(LISTVIEW_NAMES_ENDPOINT)
+    fun getListNames() = ListViewScreenBuilder.listNamesPage1
+
+    @GetMapping(LISTVIEW_VALUES_ENDPOINT)
+    fun getListValues() = ListViewScreenBuilder.simpleValuesList
 
     @GetMapping(SCROLLVIEW_TABVIEW_ENDPOINT)
     fun getScrollViewScreen() = ScrollViewScreenBuilder.build()
