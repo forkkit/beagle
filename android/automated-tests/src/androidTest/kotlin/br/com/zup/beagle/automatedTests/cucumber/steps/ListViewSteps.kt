@@ -81,6 +81,8 @@ class ListViewScreenSteps {
     //TODO: jogar para generic steps
     @When("^I rotate the screen to portrait$")
     fun rotateScreenPortrait() {
+
+        Thread.sleep(1000)
         ScreenRobot()
             .setScreenPortrait()
     }
@@ -102,6 +104,8 @@ class ListViewScreenSteps {
 
     @Then("^listView at (.*) renders view with (.*) and (.*)$")
     fun checkListViewItemRenderText(position: Int, viewId: String, text: String) {
+
+        Thread.sleep(500)
         ScreenRobot()
             .scrollListToPosition(listId, position)
             .checkViewWithIdContainsText(viewId, text)
