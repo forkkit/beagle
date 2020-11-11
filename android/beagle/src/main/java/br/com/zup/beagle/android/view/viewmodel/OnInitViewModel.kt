@@ -1,4 +1,3 @@
-//
 /*
  * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
@@ -15,20 +14,17 @@
  * limitations under the License.
  */
 
-import UIKit
-import BeagleSchema
+package br.com.zup.beagle.android.view.viewmodel
 
-extension Condition: Action {
-    public func execute(controller: BeagleController, origin: UIView) {
-        guard let evaluetedCondition = condition.evaluate(with: origin) else {
-            controller.execute(actions: onFalse, origin: origin)
-            return
-        }
-        
-        if evaluetedCondition, let onTrue = self.onTrue {
-            controller.execute(actions: onTrue, origin: origin)
-        } else if !evaluetedCondition, let onFalse = self.onFalse {
-            controller.execute(actions: onFalse, origin: origin)
-        }
+import androidx.lifecycle.ViewModel
+
+internal class OnInitViewModel : ViewModel() {
+
+    private val onInitStatusByComponent: MutableMap<Int, Boolean> = mutableMapOf()
+
+    fun setOnInitActionStatus(onInitiableComponentId: Int, onInitCalled: Boolean) {
+        onInitStatusByComponent[onInitiableComponentId] = onInitCalled
     }
+
+    fun getOnInitActionStatus(onInitiableComponentId: Int) = onInitStatusByComponent[onInitiableComponentId] ?: false
 }
