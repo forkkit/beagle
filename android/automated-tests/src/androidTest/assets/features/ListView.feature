@@ -130,7 +130,7 @@ Feature: ListView Component Validation
 #            | 13       | button:13 | Stephen - 13.0        |
 #            | 14       | button:14 | Sullivan - 14.0       |
 
-    # Não passa - problema no onInit
+    # Está passando, mas com sleep
 #    Scenario Outline: 08 - simple listView evaluates context correctly after screen rotation
 #        When I click on button SIMPLE LIST WITH CONTEXT
 #        And system navigates to SIMPLE LIST view
@@ -138,7 +138,7 @@ Feature: ListView Component Validation
 #        And I scroll listView to position 15
 #        And I rotate the screen to landscape
 #        And I scroll listView to position 0
-#        And I click on John - 0.0 button
+#        And I click on position 0
 #        And I rotate the screen to portrait
 #        Then listView at <position> renders view with <id> and <text>
 #

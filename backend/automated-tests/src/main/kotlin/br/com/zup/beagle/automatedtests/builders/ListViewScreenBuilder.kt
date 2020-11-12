@@ -281,10 +281,10 @@ object ListViewScreenBuilder {
     private val personlist = ListView(
         context = ContextData(
             id = "insideContext",
-            //value = emptyList<Person>()
-        value = listNamesPage1
+            value = emptyList<Person>()
+        //value = listNamesPage1
         ),
-        /*onInit = listOf(
+        onInit = listOf(
             SendRequest(
                 url =  "http://10.0.2.2:8080/listview-names",
                 onSuccess = listOf(
@@ -294,7 +294,7 @@ object ListViewScreenBuilder {
                     )
                 )
             )
-        ),*/
+        ),
         key = "cpf",
         dataSource = expressionOf("@{insideContext}"),
         direction = ListDirection.HORIZONTAL,

@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             R.id.listView -> {
                 startActivity(
                     Intent(this, TestActivity::class.java)
-                        .putExtras(BeagleActivity.bundleOf(ScreenRequest("/listview-simple-context")))
+                        .putExtras(BeagleActivity.bundleOf(ScreenRequest("/listview-embedded-with-context")))
                 )
             }
             R.id.webView -> goToFragment(WebViewFragment.newInstance())

@@ -18,6 +18,7 @@ package br.com.zup.beagle.automatedTests.cucumber.steps
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
+import br.com.zup.beagle.android.components.layout.Screen
 import br.com.zup.beagle.automatedTests.activity.MainActivity
 import br.com.zup.beagle.automatedTests.cucumber.elements.*
 import br.com.zup.beagle.automatedTests.cucumber.robots.ScreenRobot
@@ -69,6 +70,14 @@ class ListViewScreenSteps {
     fun scrollListViewToPosition(position: Int) {
         ScreenRobot()
             .scrollListToPosition(listId, position)
+
+        //Thread.sleep(1000)
+    }
+
+    @When("^I click on position (.*)$")
+    fun clickOnListViewTPosition(position: Int) {
+        ScreenRobot()
+            .clickOnListPosition(listId, position)
     }
 
     //TODO: jogar para generic steps
@@ -81,8 +90,6 @@ class ListViewScreenSteps {
     //TODO: jogar para generic steps
     @When("^I rotate the screen to portrait$")
     fun rotateScreenPortrait() {
-
-        Thread.sleep(1000)
         ScreenRobot()
             .setScreenPortrait()
     }
@@ -96,19 +103,25 @@ class ListViewScreenSteps {
 
     //TODO: possivelmente duplicado com o de baixo. Verificar depois
     @Then("^the button with id (.*) shows text (.*)$")
-    fun checkViewRenderText(viewId: String, text: String) {
+    fun checkViewRenderText(position: Int, text: String) {
         ScreenRobot()
-            .checkViewWithIdContainsText(viewId, text, true)
+            .checkListViewItemContainsText(listId, position, text)
     }
 
 
     @Then("^listView at (.*) renders view with (.*) and (.*)$")
     fun checkListViewItemRenderText(position: Int, viewId: String, text: String) {
 
-        Thread.sleep(500)
         ScreenRobot()
             .scrollListToPosition(listId, position)
-            .checkViewWithIdContainsText(viewId, text)
+
+
+        /*Thread.sleep(100)
+        ScreenRobot()
+            .checkViewWithIdContainsText(viewId, text, true)*/
+
+        ScreenRobot()
+            .checkListViewItemContainsText(listId, position, text)
     }
 
     @Then("^Outer listView at (.*) shows Inner listView with id (.*) that renders a view with (.*) and (.*) at (.*)$")
@@ -116,7 +129,9 @@ class ListViewScreenSteps {
         ScreenRobot()
             .scrollListToPosition(listId, outerListPosition)
             .scrollListToPosition(innerListId, innerListPosition)
-            .checkViewWithIdContainsText(viewId, text)
+            //.checkViewWithIdContainsText(viewId, text)
+
+            .checkListViewItemContainsText(innerListId, innerListPosition, text)
     }
 
     @Then("^an alert containing (.*) message should appear$")
