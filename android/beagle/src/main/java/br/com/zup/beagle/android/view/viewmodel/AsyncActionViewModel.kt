@@ -23,7 +23,7 @@ import br.com.zup.beagle.android.context.AsyncActionData
 
 internal class AsyncActionViewModel : ViewModel() {
 
-    private val _asyncActionExecuted = MutableLiveData<AsyncActionData>()
+    private val _asyncActionExecuted = MutableLiveData<AsyncActionData>() //memory leak
     val asyncActionExecuted: LiveData<AsyncActionData> get() = _asyncActionExecuted
 
     fun onAsyncActionExecuted(asyncActionData: AsyncActionData) {

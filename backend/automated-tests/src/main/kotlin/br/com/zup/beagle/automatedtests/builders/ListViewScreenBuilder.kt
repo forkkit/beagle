@@ -266,7 +266,7 @@ object ListViewScreenBuilder {
                     )
                 ).applyStyle(
                     Style(
-                        size = Size(width = 500.unitReal(), height = 300.unitReal())
+                        size = Size(height = 300.unitReal())
                     )
                 )
             ).setId(id = "outerList")
