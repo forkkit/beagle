@@ -39,7 +39,7 @@ class OrientationChangeAction(private val orientation: Int): ViewAction {
     override fun getConstraints(): Matcher<View> = ViewMatchers.isRoot()
 
     override fun perform(uiController: UiController, view: View) {
-        uiController.loopMainThreadUntilIdle()
+        uiController.loopMainThreadForAtLeast(100)
         var activity = getActivity(view.context)
         if (activity == null && view is ViewGroup) {
             val c = view.childCount
@@ -50,6 +50,7 @@ class OrientationChangeAction(private val orientation: Int): ViewAction {
             }
         }
         activity?.requestedOrientation = orientation
+        uiController.loopMainThreadForAtLeast(100)
     }
 
     private fun getActivity(context: Context): Activity? {

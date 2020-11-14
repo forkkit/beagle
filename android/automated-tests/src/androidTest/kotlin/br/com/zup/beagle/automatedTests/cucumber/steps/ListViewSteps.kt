@@ -16,17 +16,17 @@
 
 package br.com.zup.beagle.automatedTests.cucumber.steps
 
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
-import br.com.zup.beagle.android.components.layout.Screen
 import br.com.zup.beagle.automatedTests.activity.MainActivity
-import br.com.zup.beagle.automatedTests.cucumber.elements.*
+import br.com.zup.beagle.automatedTests.cucumber.elements.LISTVIEW_SCREEN_HEADER
 import br.com.zup.beagle.automatedTests.cucumber.robots.ScreenRobot
 import br.com.zup.beagle.automatedTests.utils.ActivityFinisher
 import br.com.zup.beagle.automatedTests.utils.TestUtils
 import cucumber.api.java.After
 import cucumber.api.java.Before
-import cucumber.api.java.en.*
+import cucumber.api.java.en.Given
+import cucumber.api.java.en.Then
+import cucumber.api.java.en.When
 import org.junit.Rule
 
 val LIST_VIEW_SCREEN_BFF_URL = "http://10.0.2.2:8080/listview"
@@ -70,8 +70,6 @@ class ListViewScreenSteps {
     fun scrollListViewToPosition(position: Int) {
         ScreenRobot()
             .scrollListToPosition(listId, position)
-
-        //Thread.sleep(1000)
     }
 
     @When("^I click on position (.*)$")
@@ -111,16 +109,8 @@ class ListViewScreenSteps {
 
     @Then("^listView at (.*) renders view with (.*) and (.*)$")
     fun checkListViewItemRenderText(position: Int, viewId: String, text: String) {
-
         ScreenRobot()
             .scrollListToPosition(listId, position)
-
-
-        /*Thread.sleep(100)
-        ScreenRobot()
-            .checkViewWithIdContainsText(viewId, text, true)*/
-
-        ScreenRobot()
             .checkListViewItemContainsText(listId, position, text)
     }
 
@@ -129,8 +119,6 @@ class ListViewScreenSteps {
         ScreenRobot()
             .scrollListToPosition(listId, outerListPosition)
             .scrollListToPosition(innerListId, innerListPosition)
-            //.checkViewWithIdContainsText(viewId, text)
-
             .checkListViewItemContainsText(innerListId, innerListPosition, text)
     }
 

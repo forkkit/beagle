@@ -17,39 +17,42 @@
 package br.com.zup.beagle.automatedTests.cucumber.robots
 
 import android.text.InputType
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.NonNull
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.UiController
-import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.pressBack
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.BoundedMatcher
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isEnabled
+import androidx.test.espresso.matcher.ViewMatchers.isRoot
+import androidx.test.espresso.matcher.ViewMatchers.withClassName
+import androidx.test.espresso.matcher.ViewMatchers.withHint
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withInputType
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import br.com.zup.beagle.android.utils.toAndroidId
 import br.com.zup.beagle.automatedTests.R
 import br.com.zup.beagle.automatedTests.utils.WaitHelper
 import br.com.zup.beagle.automatedTests.utils.action.OrientationChangeAction
+import br.com.zup.beagle.automatedTests.utils.action.SmoothScrollAction
 import br.com.zup.beagle.automatedTests.utils.matcher.MatcherExtension
 import br.com.zup.beagle.widget.core.TextAlignment
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.hamcrest.TypeSafeMatcher
-
 
 class ScreenRobot {
 
@@ -58,7 +61,7 @@ class ScreenRobot {
             WaitHelper.waitForWithElement(onView(withText(text)))
         }
 
-        onView(Matchers.allOf(withText(text))).check(matches(isDisplayed()))
+        onView(allOf(withText(text))).check(matches(isDisplayed()))
         return this
     }
 
@@ -67,7 +70,7 @@ class ScreenRobot {
             WaitHelper.waitForWithElement(onView(withText(text)))
         }
 
-        onView(Matchers.allOf(withText(text), MatcherExtension.withTextColor(color))).check(matches(isDisplayed()))
+        onView(allOf(withText(text), MatcherExtension.withTextColor(color))).check(matches(isDisplayed()))
         return this
     }
 
@@ -76,7 +79,7 @@ class ScreenRobot {
             WaitHelper.waitForWithElement(onView(withText(text)))
         }
 
-        onView(Matchers.allOf(withText(text), MatcherExtension.withTextAlignment(textAlignment))).check(matches(isDisplayed()))
+        onView(allOf(withText(text), MatcherExtension.withTextAlignment(textAlignment))).check(matches(isDisplayed()))
         return this
     }
 
@@ -85,12 +88,12 @@ class ScreenRobot {
             WaitHelper.waitForWithElement(onView(withText(text)))
         }
 
-        onView(Matchers.allOf(withText(text))).check(doesNotExist())
+        onView(allOf(withText(text))).check(doesNotExist())
         return this
     }
 
     fun checkViewIsNotDisplayed(text: String?): ScreenRobot {
-        onView(Matchers.allOf(withText(text))).check(matches(not(isDisplayed())))
+        onView(allOf(withText(text))).check(matches(not(isDisplayed())))
         return this
     }
 
@@ -104,17 +107,17 @@ class ScreenRobot {
             WaitHelper.waitForWithElement(onView(withHint(hint)))
         }
 
-        onView(Matchers.allOf(withHint(hint))).check(matches(isDisplayed()))
+        onView(allOf(withHint(hint))).check(matches(isDisplayed()))
         return this
     }
 
     fun clickOnText(text: String?): ScreenRobot {
-        onView(Matchers.allOf(withText(text), isDisplayed())).perform(ViewActions.click())
+        onView(allOf(withText(text), isDisplayed())).perform(ViewActions.click())
         return this
     }
 
     fun clickOnInputWithHint(hint: String?): ScreenRobot {
-        onView(Matchers.allOf(withHint(hint), isDisplayed())).perform(ViewActions.click())
+        onView(allOf(withHint(hint), isDisplayed())).perform(ViewActions.click())
         return this
     }
 
@@ -152,7 +155,7 @@ class ScreenRobot {
     }
 
     fun swipeLeftOnView(): ScreenRobot {
-        onView(Matchers.allOf(withId(R.id.root_layout))).perform(ViewActions.swipeLeft())
+        onView(allOf(withId(R.id.root_layout))).perform(ViewActions.swipeLeft())
         return this
     }
 
@@ -187,19 +190,14 @@ class ScreenRobot {
     }
 
     fun scrollListToPosition(listId: String, position: Int): ScreenRobot {
-
         var isScrolling = true
-        onView(withId(listId.toAndroidId()))
-            //.perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(position))
-            .perform(MeuViewAction(position){
-                isScrolling = false
-            })
-
+        onView(withId(listId.toAndroidId())).perform(SmoothScrollAction(position) {
+            isScrolling = false
+        })
         while (isScrolling) {
             //TODO: refatorar
             Thread.sleep(0)
         }
-        //recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView, null, recyclerAdapter.getItemCount() - 1);
         return this
     }
 
@@ -209,65 +207,13 @@ class ScreenRobot {
         return this
     }
 
-    class MeuViewAction(val position: Int, val onScrollEnd: () -> Unit) : ViewAction {
-        override fun getConstraints(): Matcher<View> {
-            return allOf(isAssignableFrom(RecyclerView::class.java), isDisplayed())
-        }
-
-        override fun getDescription(): String = ""
-
-        override fun perform(uiController: UiController?, view: View?) {
-            val recyclerView = view as RecyclerView
-
-
-            if(canScroll(recyclerView, position)) {
-                Log.wtf("list", "canScroll to $position")
-                recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                        super.onScrollStateChanged(recyclerView, newState)
-                        when (newState) {
-                            SCROLL_STATE_IDLE -> {
-                                onScrollEnd.invoke()
-                                Log.wtf("list", "scrollEnd to $position")
-                                recyclerView.removeOnScrollListener(this)
-                            }
-                        }
-                    }
-                })
-
-                //recyclerView.getLayoutManager()?.smoothScrollToPosition(recyclerView, null, position)
-                recyclerView.smoothScrollToPosition(position)
-
-                uiController?.loopMainThreadUntilIdle()
-            } else {
-                Log.wtf("list", "cant scroll to $position - called scrollEnd")
-                onScrollEnd.invoke()
-            }
-        }
-
-        //TODO: refatorar
-        private fun canScroll(recyclerView: RecyclerView, position: Int): Boolean{
-            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-            return if(position == 0){
-                layoutManager.findFirstCompletelyVisibleItemPosition() > 0
-            } else {
-                if(position == layoutManager.itemCount -1) {
-                    layoutManager.findLastCompletelyVisibleItemPosition() < layoutManager.itemCount - 1
-                } else {
-                    layoutManager.findFirstCompletelyVisibleItemPosition() > position || layoutManager.findLastCompletelyVisibleItemPosition() < position
+    fun checkListViewItemContainsText(listId: String, position: Int, expectedText: String): ScreenRobot {
+        onView(withId(listId.toAndroidId()))
+            .check { view, _ ->
+                view.post {
+                    matches(atPosition(position, hasDescendant(withText(expectedText))))
                 }
             }
-
-
-        }
-
-    }
-
-    fun checkListViewItemContainsText(listId: String, position: Int, expectedText: String): ScreenRobot {
-
-        onView(withId(listId.toAndroidId()))
-            .check(matches(atPosition(position, hasDescendant(withText(expectedText)))))
         return this
     }
 
@@ -280,7 +226,7 @@ class ScreenRobot {
     }
 
     fun clickOnViewWithId(id: String): ScreenRobot {
-        onView(withId(id.toAndroidId())).perform(ViewActions.click())
+        onView(withId(id.toAndroidId())).perform(click())
         return this
     }
 
